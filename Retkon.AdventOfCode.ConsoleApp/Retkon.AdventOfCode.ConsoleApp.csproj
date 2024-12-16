@@ -6,15 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>6dcca89c-bc64-49b7-aad4-f2f14832e7ee</UserSecretsId>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AdventOfCodeSupport" Version="2.4.2" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="2023\Inputs\" />
-    <Folder Include="2024\Inputs\" />
   </ItemGroup>
 
 </Project>
