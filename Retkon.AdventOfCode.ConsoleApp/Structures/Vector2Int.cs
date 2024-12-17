@@ -20,6 +20,8 @@ public readonly struct Vector2Int(int x, int y)
     public static Vector2Int operator *(Vector2Int a, int value) => new(a.X * value, a.Y * value);
     public static Vector2Int operator *(int value, Vector2Int a) => new(a.X * value, a.Y * value);
     public static Vector2Int operator %(Vector2Int a, Vector2Int b) => new(a.X % b.X, a.Y % b.Y);
+    public static bool operator ==(Vector2Int a, Vector2Int b) => a.X == b.X && a.Y == b.Y;
+    public static bool operator !=(Vector2Int a, Vector2Int b) => a.X != b.X || a.Y != b.Y;
 
     public static readonly ReadOnlyCollection<Vector2Int> Plus = new([(0, -1), (1, 0), (0, 1), (-1, 0)]);
     public static readonly ReadOnlyCollection<Vector2Int> Diagonal = new([(1, -1), (1, 1), (-1, 1), (-1, -1)]);

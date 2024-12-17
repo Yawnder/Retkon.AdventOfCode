@@ -26,4 +26,9 @@ internal static class DirectionExtension
         return (Direction)(((int)direction + (1 * amount)) % 4);
     }
 
+    public static Vector2Int GetOffset(this Direction direction)
+    {
+        return Vector2Int.Plus[(int)direction];
+    }
+
 }

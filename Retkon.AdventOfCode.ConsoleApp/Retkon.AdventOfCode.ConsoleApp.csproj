@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="AdventOfCodeSupport" Version="2.4.2" />
     <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>

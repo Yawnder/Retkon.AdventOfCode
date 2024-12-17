@@ -21,14 +21,14 @@
 //    {
 //        var result = 0;
 
-//        var height = this.Input.Lines.Length;
-//        var width = this.Input.Lines[0].Length;
+//        this.height = this.Input.Lines.Length;
+//        this.width = this.Input.Lines[0].Length;
 
-//        for (int x = 0; x < width; x++)
+//        for (int x = 0; x < this.width; x++)
 //        {
 //        }
 
-//        for (int y = 0; y < height; y++)
+//        for (int y = 0; y < this.height; y++)
 //        {
 
 //        }
@@ -42,5 +42,7 @@
 
 //        return result;
 //    }
+
+
 //}
 

@@ -38,7 +38,7 @@ internal class ConsoleHelper
 
     public static ConsoleHelper Instance { get; } = new ConsoleHelper();
 
-    public bool IsEnabled { get; set; }
+    public bool IsEnabled { get; set; } = true;
 
     public Dictionary<Type, Func<object, ConsoleColor>> ColorFunctions { get; set; } = [];
     //public Dictionary<Type, Func<object, int>> ColorFunctions { get; set; } = [];

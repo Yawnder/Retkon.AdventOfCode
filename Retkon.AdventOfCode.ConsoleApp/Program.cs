@@ -11,7 +11,7 @@ internal class Program
         Console.WriteLine("Hello, Adventer!");
 
         var solutions = new AdventSolutions();
-        //var day = solutions.GetDay(2024, 12);
+        //var day = solutions.GetDay(2024, 14);
         //day.Part1().Part2().Benchmark();
 
         var day = solutions.GetMostRecentDay();
