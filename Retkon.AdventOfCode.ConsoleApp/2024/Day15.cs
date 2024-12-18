@@ -20,7 +20,7 @@ public class Day15 : AdventBase
     private int height;
     private int width;
     private Vector2Int position;
-    private List<TileContent[]> map;
+    private List<TileContent[]> map = null!;
 
     protected override object InternalPart1()
     {

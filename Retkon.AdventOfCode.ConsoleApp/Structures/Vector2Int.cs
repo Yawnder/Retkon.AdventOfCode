@@ -22,6 +22,17 @@ public readonly struct Vector2Int(int x, int y)
     public static Vector2Int operator %(Vector2Int a, Vector2Int b) => new(a.X % b.X, a.Y % b.Y);
     public static bool operator ==(Vector2Int a, Vector2Int b) => a.X == b.X && a.Y == b.Y;
     public static bool operator !=(Vector2Int a, Vector2Int b) => a.X != b.X || a.Y != b.Y;
+    public override bool Equals(object? obj)
+    {
+        return obj is Vector2Int @int &&
+               this.X == @int.X &&
+               this.Y == @int.Y;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(this.X, this.Y);
+    }
 
     public static readonly ReadOnlyCollection<Vector2Int> Plus = new([(0, -1), (1, 0), (0, 1), (-1, 0)]);
     public static readonly ReadOnlyCollection<Vector2Int> Diagonal = new([(1, -1), (1, 1), (-1, 1), (-1, -1)]);
