@@ -20,6 +20,17 @@ internal static class ArrayHelper
         return result;
     }
 
+    public static void Fill<T>(this T[][] array, T value)
+    {
+        for (int x = 0; x < array.Length; x++)
+        {
+            for (int y = 0; y < array[0].Length; y++)
+            {
+                array[x][y] = value;
+            }
+        }
+    }
+
     public static T[][] DeepClone<T>(T[][] map)
     {
         var newMap = new T[map.Length][];

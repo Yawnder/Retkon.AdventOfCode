@@ -16,6 +16,7 @@
 
 //    private int height;
 //    private int width;
+//    private ConsoleHelper consoleHelper = ConsoleHelper.Instance;
 
 //    protected override object InternalPart1()
 //    {
