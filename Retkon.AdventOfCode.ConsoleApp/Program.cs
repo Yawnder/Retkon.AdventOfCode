@@ -19,8 +19,10 @@ internal class Program
 
         await day.DownloadInputAsync();
 
-        day.Part1().Part2();
-        await day.SubmitPart1Async();
+        //day.Part1().Part2();
+        //await day.SubmitPart1Async();
+        day.Part2();
+
         await day.SubmitPart2Async();
 
         await Task.CompletedTask;

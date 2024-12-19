@@ -26,7 +26,7 @@ public class Day18 : AdventBase
     private int[][] map = null!;
     private int[][] mapCost = null!;
     private Regex regex = new Regex(@"(?<x>\d*),(?<y>\d*)", RegexOptions.Compiled);
-    private int t;
+
     protected override object InternalPart1()
     {
         var result = 0;
