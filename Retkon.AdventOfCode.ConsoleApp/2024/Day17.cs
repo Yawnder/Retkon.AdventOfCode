@@ -1,4 +1,5 @@
 ﻿using AdventOfCodeSupport;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Diagnostics.Tracing.Parsers.IIS_Trace;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace Retkon.AdventOfCode.ConsoleApp._2024;
 public class Day17 : AdventBase
 {
 
+    private long? overrideA = null;
     private long[] regs = null!;
 
     protected override object InternalPart1()
@@ -25,6 +27,11 @@ public class Day17 : AdventBase
             long.Parse(this.Input.Lines[1][12..]),
             long.Parse(this.Input.Lines[2][12..]),
         ];
+
+        if (this.overrideA != null)
+        {
+            this.regs[0] = this.overrideA.Value;
+        }
 
         var outputs = new List<long>();
 
@@ -75,227 +82,68 @@ public class Day17 : AdventBase
 
     protected override object InternalPart2()
     {
-        var program = this.Input.Lines[4][9..].Split(',').Select(v => byte.Parse(v));
-        var ops = program.Where((v, i) => i % 2 == 0).ToArray();
-        var operands = program.Where((v, i) => i % 2 == 1).ToArray();
-        var outputList = new List<byte>(program);
+        var previousCycleEndAStack = new Stack<long>([0]);
+        var currentCycleEndAStack = new Stack<long>([0]);
+        var cycleEndOutput = this.Input.Lines[4][9..].Split(',').Select(v => byte.Parse(v)).Reverse().ToList();
 
-        //long initialA = 200_000_000_000_000L;
-        //long initialA = 000L;
+        var currentCycle = 0;
 
-        var outputs = new List<long>();
-        var loopCount = 0;
-        for (long initialA = 4398046511103L; initialA <= 35184372088831L; initialA++)
+        while (currentCycle < cycleEndOutput.Count)
         {
+            long a;
+            long b;
+            long c;
 
-            var outputCount = 0;
-            var isImpossible = false;
-            outputs.Clear();
-
-            this.regs =
-            [
-                initialA,
-                0,
-                0,
-            ];
-
-            for (int i = 0; i < ops.Length; i++)
+            while (currentCycleEndAStack.TryPop(out long cycleEndA))
             {
-                var op = ops[i];
-                var literalOperand = operands[i];
-                var comboOperand = this.GetComboValue(literalOperand);
+                long cycleOutput = cycleEndOutput[currentCycle];
 
-                switch (op)
+                for (long deltaA = 0; deltaA < 8; deltaA++)
                 {
-                    case 0:
-                        this.regs[0] = (long)(this.regs[0] / Math.Pow(2, comboOperand));
-                        break;
-                    case 1:
-                        this.regs[1] = this.regs[1] ^ literalOperand;
-                        break;
-                    case 2:
-                        this.regs[1] = comboOperand % 8;
-                        break;
-                    case 3:
-                        var v3 = this.regs[0];
-                        if (v3 != 0)
-                        {
-                            i = operands[i] - 1;
-                        }
-                        break;
-                    case 4:
-                        this.regs[1] = this.regs[1] ^ this.regs[2];
-                        break;
-                    case 5:
-                        var outputValue = comboOperand % 8;
-                        if (outputList[outputCount] != outputValue)
-                        {
-                            isImpossible = true;
-                        }
-                        else
-                        {
-                            outputs.Add(comboOperand % 8);
-                            outputCount++;
-                        }
-                        break;
-                    case 7:
-                        this.regs[2] = (long)(this.regs[0] / Math.Pow(2, comboOperand));
-                        break;
-                    default:
-                        throw new NotImplementedException();
+                    a = cycleEndA * 8 + deltaA;
+
+                    b = a % 8;
+                    b = b ^ 2;
+                    c = a / (long)Math.Pow(2, b);
+                    a = a / 8;
+                    b = b ^ 7 ^ c;
+
+                    if (b % 8 == cycleOutput && a == cycleEndA)
+                    {
+                        previousCycleEndAStack.Push(cycleEndA * 8 + deltaA);
+                    }
                 }
-
-                if (isImpossible)
-                    break;
             }
 
-            if (!isImpossible)
-            {
-            }
+            if (previousCycleEndAStack.Count == 0)
+                throw new NotImplementedException();
 
-            if (outputs.Count > 14)
-            {
-                Console.WriteLine($"{initialA}: {string.Join(",", outputs)}");
-            }
-
-            if (++loopCount > 50_000_000)
-            {
-                loopCount = 0;
-                Console.WriteLine($"{DateTime.Now:HH:mm:ss}: {(float)(initialA - 4398046511103L) / 35184372088831L:0.0000%}");
-            }
-            //initialA++;
+            currentCycleEndAStack = previousCycleEndAStack;
+            previousCycleEndAStack = new Stack<long>();
+            currentCycle++;
         }
 
-        throw new NotImplementedException();
+        foreach (long overrideA in currentCycleEndAStack.Order())
+        {
+            this.overrideA = overrideA;
+            var output = (string)this.InternalPart1();
+
+            if (output == this.Input.Lines[4][9..])
+            {
+                break;
+            }
+            else
+            {
+                this.overrideA = null;
+            }
+        }
+
+        if (this.overrideA == null)
+            throw new NotImplementedException();
+
+        else
+            return this.overrideA.Value;
     }
-
-    //protected override object InternalPart2()
-    //{
-    //    var program = this.Input.Lines[4][9..].Split(',').Select(v => byte.Parse(v));
-    //    var ops = program.Where((v, i) => i % 2 == 0).ToArray();
-    //    var operands = program.Where((v, i) => i % 2 == 1).ToArray();
-
-    //    var desiredOutput = string.Join(',', this.Input.Lines[4][9..]);
-    //    var reverseOutputList = new List<byte>(program.Reverse());
-
-    //    while (true)
-    //    {
-    //        this.regs = [0, 0, 0];
-
-    //        for (long initialC = 0L; initialC <= long.MaxValue; initialC++)
-    //        {
-    //            this.regs[2] = initialC;
-    //            var isLast = true;
-
-    //            for (int outputId = 0; outputId < reverseOutputList.Count; outputId++)
-    //            {
-    //                var currentOutput = reverseOutputList[outputId];
-
-    //                // I7
-    //                for (long i7B = currentOutput; i7B < long.MaxValue; i7B += 8)
-    //                {
-    //                    this.regs[1] = i7B;
-
-    //                    // I6
-    //                    this.regs[1] ^= this.regs[2];
-
-    //                    // I5
-    //                    this.regs[1] ^= 7;
-
-    //                    // I4
-    //                    for (long i4DA = 0L; i4DA < 8; i4DA++)
-    //                    {
-    //                        if (isLast && i4DA > 0)
-    //                            break;
-
-    //                        this.regs[0] = this.regs[0] * 8 + i4DA;
-
-    //                        // I3
-    //                        for (long i3DC = 0L; i3DC < 8; i3DC++)
-    //                        {
-    //                            if (this.regs[0] != this.regs[2] * Math.Pow(2, this.regs[1]))
-    //                            {
-    //                                continue;
-    //                            }
-
-    //                        }
-
-    //                    }
-
-    //                }
-    //                isLast = false;
-    //            }
-    //        }
-
-    //        for (var g0 = 0; g0 < 3; g0++)
-    //        {
-    //        }
-
-
-
-
-
-
-
-    //        this.regs[0] *= 8;
-
-    //        for (byte k = 0; k < 8; k++)
-    //        {
-    //            this.regs[0] *= 8;
-
-
-
-    //            var outputs = new List<long>();
-    //            for (long i = 0; i < ops.Length; i++)
-    //            {
-    //                var op = ops[i];
-    //                var literalOperand = operands[i];
-    //                var comboOperand = this.GetComboValue(literalOperand);
-
-    //                switch (op)
-    //                {
-    //                    case 0:
-    //                        this.regs[0] = (long)(this.regs[0] / Math.Pow(2, comboOperand));
-    //                        break;
-    //                    case 1:
-    //                        this.regs[1] = this.regs[1] ^ literalOperand;
-    //                        break;
-    //                    case 2:
-    //                        this.regs[1] = comboOperand % 8;
-    //                        break;
-    //                    case 3:
-    //                        var v3 = this.regs[0];
-    //                        if (v3 != 0)
-    //                        {
-    //                            i = operands[i] - 1;
-    //                        }
-    //                        break;
-    //                    case 4:
-    //                        this.regs[1] = this.regs[1] ^ this.regs[2];
-    //                        break;
-    //                    case 5:
-    //                        outputs.Add(comboOperand % 8);
-    //                        break;
-    //                    case 7:
-    //                        this.regs[2] = (long)(this.regs[0] / Math.Pow(2, comboOperand));
-    //                        break;
-    //                    default:
-    //                        throw new NotImplementedException();
-    //                }
-    //            }
-
-    //            var currentOutput = string.Join(",", outputs);
-    //            if (desiredOutput == currentOutput)
-    //            {
-    //                break;
-    //            }
-    //        }
-    //    }
-
-    //    throw new NotImplementedException();
-
-    //    return this.regs[0];
-    //}
 
     private long GetComboValue(byte combo)
     {
