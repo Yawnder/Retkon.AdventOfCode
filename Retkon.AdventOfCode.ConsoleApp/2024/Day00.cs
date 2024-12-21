@@ -12,14 +12,16 @@
 
 //namespace Retkon.AdventOfCode.ConsoleApp._2024;
 
-//public class Day00 : AdventBase
+//public partial class Day00 : AdventBase
 //{
 
 //    private int height;
 //    private int width;
 //    private readonly ConsoleHelper consoleHelper = ConsoleHelper.Instance;
 
-//    private Regex inputRegex = new Regex(@"", RegexOptions.Compiled);
+//    [GeneratedRegex(@"")]
+//    private static partial Regex GetInputRegex();
+//    private readonly Regex inputRegex = GetInputRegex();
 
 //    protected override object InternalPart1()
 //    {
@@ -46,7 +48,6 @@
 
 //        return result;
 //    }
-
 
 //}
 
