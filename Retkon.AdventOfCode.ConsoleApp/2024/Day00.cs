@@ -1,4 +1,5 @@
 ﻿//using AdventOfCodeSupport;
+//using Retkon.AdventOfCode.ConsoleApp.Helpers;
 //using System;
 //using System.Collections.Generic;
 //using System.Diagnostics;
@@ -16,7 +17,9 @@
 
 //    private int height;
 //    private int width;
-//    private ConsoleHelper consoleHelper = ConsoleHelper.Instance;
+//    private readonly ConsoleHelper consoleHelper = ConsoleHelper.Instance;
+
+//    private Regex inputRegex = new Regex(@"", RegexOptions.Compiled);
 
 //    protected override object InternalPart1()
 //    {
